@@ -1,6 +1,7 @@
 {
     "pathParameters": {
-      "id": "7fc31250-ab22-11ea-be73-acde48001122"
+      "roundId": "b5a55dc0-b71a-11ea-b14e-acde48001122",
+      "questionId": "b5a55dc0-b71a-11ea-b14e-acde48001122" 
     },
     "requestContext": {
       "identity": {
