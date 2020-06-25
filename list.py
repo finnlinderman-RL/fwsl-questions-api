@@ -5,13 +5,13 @@ import libs.lib_handler as handler
 
 def main(event, context):
     #user = event.get('requestContext').get('identity').get('cognitoIdentityId')
-    user="420"
-    # Get all field entry for a given user
+    roundId="420"
+    # Get all field entry for a given roundid
     response = db.client.query(
         TableName=db.USER_TABLE,
         KeyConditionExpression="roundId = :roundId",
         ExpressionAttributeValues={
-            ":roundId": {'S': user}
+            ":roundId": {'S': roundId}
         }
     )
     if "Items" not in response:
