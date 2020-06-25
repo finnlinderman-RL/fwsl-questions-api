@@ -2,7 +2,7 @@
     "body": "{\"content\":\"mockCreateContent\", \"attachment\":\"mockCreateAttachment\"}",
     "requestContext": {
       "identity": {
-        "cognitoIdentityId": "USER-SUB-1234"
+        "roundId": "USER-SUB-1234"
       }
     }
 }

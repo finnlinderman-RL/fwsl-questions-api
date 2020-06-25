@@ -8,10 +8,10 @@ provider:
   name: aws
   runtime: python3.7
   stage: dev
-  region: us-east-1
+  region: us-east-2
 
   environment:
-    tableName: notes-python-example-database
+    tableName:  fwsl-questions
 
   iamRoleStatements:
     - Effect: Allow
@@ -23,7 +23,7 @@ provider:
         - dynamodb:PutItem
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
-      Resource: "arn:aws:dynamodb:us-east-1:*:*"
+      Resource: "arn:aws:dynamodb:us-east-2:463038042756:table/lucas-notes-db"
 
 functions:
   create:

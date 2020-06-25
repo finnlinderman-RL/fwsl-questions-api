@@ -8,9 +8,9 @@ def main(event, context):
     # Get all field entry for a given user
     response = db.client.query(
         TableName=db.USER_TABLE,
-        KeyConditionExpression="userId = :userId",
+        KeyConditionExpression="roundId = :roundId",
         ExpressionAttributeValues={
-            ":userId": {'S': user}
+            ":roundId": {'S': user}
         }
     )
     if "Items" not in response:
