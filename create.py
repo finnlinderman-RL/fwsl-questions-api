@@ -21,8 +21,7 @@ def main(event, context):
         'roundId': {"S": body["roundId"]},
         'questionId': {"S": str(uuid.uuid1())},
         'question' : {"S": body["content"]},
-        #'attachment': {"S": body["attachment"]},
-        #'createdAt': {"S": datetime.date.today().strftime("yyyy-mm-dd")}
+        'createdAt': {"S": datetime.date.today().strftime("yyyy-mm-dd")}
     }
 
     # Add that field entry to the table

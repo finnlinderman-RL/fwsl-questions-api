@@ -4,7 +4,8 @@ import libs.lib_db as db
 import libs.lib_handler as handler
 
 def main(event, context):
-    user = event.get('requestContext').get('identity').get('cognitoIdentityId')
+    #user = event.get('requestContext').get('identity').get('cognitoIdentityId')
+    user="420"
     # Get all field entry for a given user
     response = db.client.query(
         TableName=db.USER_TABLE,
