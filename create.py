@@ -12,10 +12,13 @@ def main(event, context):
     # Load the json string into a dictionary
     body = json.loads(event.get('body'))
 
+    # hard coding round if for now, need to eventually have this as a parameter
+    roundId = "420"
+
     # Prepare a dynamo db item.
     item = {
         #'userId': {"S": event.get('requestContext').get('identity').get('cognitoIdentityId')},
-        'roundId': {"S": str(uuid.uuid1())},
+        'roundId': {"S": body["roundId"]},
         'questionId': {"S": str(uuid.uuid1())},
         'question' : {"S": body["content"]},
         #'attachment': {"S": body["attachment"]},

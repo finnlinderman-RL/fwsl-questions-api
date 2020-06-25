@@ -2,8 +2,8 @@ import libs.lib_db as db
 import libs.lib_handler as handler
 
 def main(event, context):
-    round_id = event.get('requestContext').get('identity').get('cognitoIdentityId')
-    question_id = event.get('pathParameters').get('id')
+    round_id = event.get('pathParameters').get('roundId')
+    question_id = event.get('pathParameters').get('questionId')
     response = db.client.get_item(
         TableName=db.USER_TABLE,
         Key={

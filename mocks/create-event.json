@@ -1,5 +1,5 @@
 {
-    "body": "{\"content\":\"mockCreateContent\", \"attachment\":\"mockCreateAttachment\"}",
+    "body": "{\"roundId\": \"420\",\"content\":\"mockCreateContent\", \"attachment\":\"mockCreateAttachment\"}",
     "requestContext": {
       "identity": {
         "roundId": "USER-SUB-1234"
