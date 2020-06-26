@@ -60,6 +60,16 @@ functions:
     events:
       - websocket:
           route: getPotentialAnswerers
+  createQuestion:
+    handler: websocket.store_question
+    events:
+      - websocket:
+          route: createQuestion
+  updateUserInfo:
+    handler: websocket.update_user
+    events:
+      - websocket:
+          route: updateUserInfo
   create:
     handler: create.main
     events:

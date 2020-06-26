@@ -3,6 +3,7 @@ from boto3.dynamodb.conditions import Key
 import logging
 import json
 import random
+import uuid
 
 logger = logging.getLogger("websocket_handler_logger")
 logger.setLevel(logging.DEBUG)
@@ -60,7 +61,7 @@ def connection_manager(event, context):
 
         # Add connectionID to the database
         table = dynamodb.Table("fwsl-connections")
-        table.put_item(Item={"ConnectionID": connectionID, "roundID": "420", "username": "Chad", "hasAnswered": False})
+        table.put_item(Item={"ConnectionID": connectionID})
         return _get_response(200, "Connect successful.")
 
     elif event["requestContext"]["eventType"] == "DISCONNECT":
@@ -74,6 +75,46 @@ def connection_manager(event, context):
     else:
         logger.error("Connection manager received unrecognized eventType '{}'")
         return _get_response(500, "Unrecognized eventType.")
+
+
+def store_question(event, context):
+    """
+    Recieve a question and store it to the DynamoDB
+    """
+    logger.info("Creating a new question")
+    round_id, username = _get_user(event)
+    body = _get_body(event)
+
+    # TODO fix this to use an external table to keep track of the # of question for each round, instead of uuid
+    #   also fix the return type
+    question_table = dynamodb.Table("fwsl-questions")
+    question_table.put_item(Item={"roundId": round_id,
+                                  "questionId": str(uuid.uuid1()),
+                                  "question": body["question"]})
+    return _get_response(200, "Update successful")
+
+
+def update_user(event, context):
+    """
+    Sets the user info for that connection
+    """
+
+    body = _get_body(event)
+
+    logger.info("setting user info")
+    connection_id = event["requestContext"].get("connectionId")
+    table = dynamodb.Table("fwsl-connections")
+    response = table.update_item(
+        Key={'ConnectionID': connection_id},
+        UpdateExpression="set roundID=:r, username=:u",
+        ExpressionAttributeValues={
+            ':r': body["roundId"],
+            ':u': body["username"]
+        },
+        ReturnValues="UPDATED_NEW"
+    )
+    logger.debug(response)
+    return _get_response(200, response)
 
 
 def set_answerer(event, context):

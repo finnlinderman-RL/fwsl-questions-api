@@ -21,6 +21,17 @@ serverless invoke local --function list --path mocks/list-event.json
 
 # Serverless Websocket API
 ```javascript
+// update the user info 
+// IMPORTANT: the user info must be updated before any other requests are made, becasue everything is tied to the round
+{"action": "updateUserInfo", "roundId": "your_round_id", "username": "your_user_name"}
+// does not broadcast anything, updates the user info in the db
+
+
+// create a new question
+{"action": "createQuestion", "question": "your question here"}
+// does not broadcast anything, but adds a new question to the db
+
+
 // get all users who haven't answered a question yet
 {"action": "getPotentialAnswerers"} 
 // broadcasts to all users in round:
@@ -30,7 +41,7 @@ serverless invoke local --function list --path mocks/list-event.json
 // set the next answerer
 {"action": "setAnswerer", "answerer": "Chad"}
 // broadcasts to user defined by "answerer" above
-{"type": "pickQuestion", "question_ids": []}
+{"type": "pickQuestion", "question_ids": ["qid1", "qid2", ...]}
 // broadcasts to all users EXCEPT "answerer". 
 // "username" is the user who sent the "setAnswerer" call
 {"type": "nextAnswerer", "username": "otherUser", "answerer": "Chad"}
