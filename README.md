@@ -19,6 +19,30 @@ serverless invoke local --function delete --path mocks/delete-event.json
 serverless invoke local --function list --path mocks/list-event.json
 ```
 
+# Serverless Websocket API
+```javascript
+// get all users who haven't answered a question yet
+{"action": "getPotentialAnswerers"} 
+// broadcasts to all users in round:
+{"type": "pickAnswerer", "options": [user list]}
+
+
+// set the next answerer
+{"action": "setAnswerer", "answerer": "Chad"}
+// broadcasts to user defined by "answerer" above
+{"type": "pickQuestion", "question_ids": []}
+// broadcasts to all users EXCEPT "answerer". 
+// "username" is the user who sent the "setAnswerer" call
+{"type": "nextAnswerer", "username": "otherUser", "answerer": "Chad"}
+
+
+// ask a question to the round. Should be called on clicking the question tile
+{"action": "askQuestion", "questionID": "3"}
+// broadcasts to all users in round.
+// "username" is the user who sent the "askQuestion" call
+{"type": "question", "username": "otherUser", "question": "mockCreateContent"}
+```
+
 
 # Deploying
 `AWS_PROFILE=pg serverless deploy`
