@@ -272,7 +272,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/trvy-python-websocket/dev/1593214795399-2020-06-26T23:39:55.399Z/connectionManager.zip"
+                "S3Key": "serverless/trvy-python-websocket/dev/1593216859768-2020-06-27T00:14:19.768Z/connectionManager.zip"
               },
               "FunctionName": "trvy-python-websocket-dev-connectionManager",
               "Handler": "websocket.connection_manager",
@@ -295,14 +295,14 @@
               "ConnectionManagerLogGroup"
             ]
           },
-          "ConnectionManagerLambdaVersiongj8642mlQtv9kxWfSwO5X0pIyxXRmDDDR6AFob54V5o": {
+          "ConnectionManagerLambdaVersion3OdMRQJu88mP2ch7eQ0q0SoqeVNuVor4NctALHcXFk": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "ConnectionManagerLambdaFunction"
               },
-              "CodeSha256": "J0rYwAlyWeoZfwW8EjmR6uIq9PncjyfBhncW4m84tfU="
+              "CodeSha256": "E6lPpgzYi6bd3j4fgZ32jECYldN7EvSKZRn8Y2ESSqw="
             }
           },
           "DefaultMessageLambdaFunction": {
@@ -312,7 +312,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/trvy-python-websocket/dev/1593214795399-2020-06-26T23:39:55.399Z/defaultMessage.zip"
+                "S3Key": "serverless/trvy-python-websocket/dev/1593216859768-2020-06-27T00:14:19.768Z/defaultMessage.zip"
               },
               "FunctionName": "trvy-python-websocket-dev-defaultMessage",
               "Handler": "websocket.default_message",
@@ -335,14 +335,14 @@
               "DefaultMessageLogGroup"
             ]
           },
-          "DefaultMessageLambdaVersionmLkrEnfTZuPirRgADFVwdK67IkWIRaUGIQpX9Hb22YI": {
+          "DefaultMessageLambdaVersion8WjFuhiY48fJbeWXED55boJcGTmnsQg1yrQugKuIvuU": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "DefaultMessageLambdaFunction"
               },
-              "CodeSha256": "J0rYwAlyWeoZfwW8EjmR6uIq9PncjyfBhncW4m84tfU="
+              "CodeSha256": "E6lPpgzYi6bd3j4fgZ32jECYldN7EvSKZRn8Y2ESSqw="
             }
           },
           "AskQuestionLambdaFunction": {
@@ -352,7 +352,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/trvy-python-websocket/dev/1593214795399-2020-06-26T23:39:55.399Z/askQuestion.zip"
+                "S3Key": "serverless/trvy-python-websocket/dev/1593216859768-2020-06-27T00:14:19.768Z/askQuestion.zip"
               },
               "FunctionName": "trvy-python-websocket-dev-askQuestion",
               "Handler": "websocket.send_question_to_room",
@@ -375,14 +375,14 @@
               "AskQuestionLogGroup"
             ]
           },
-          "AskQuestionLambdaVersionxRQWlt1MkIqBLCWjLSecG8e95GLjnxjeWyMSHNXDPQ": {
+          "AskQuestionLambdaVersion2aWWxw6SwpjcByoa23KRm1oApJFD5xZZzKbwYa8wU": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "AskQuestionLambdaFunction"
               },
-              "CodeSha256": "J0rYwAlyWeoZfwW8EjmR6uIq9PncjyfBhncW4m84tfU="
+              "CodeSha256": "E6lPpgzYi6bd3j4fgZ32jECYldN7EvSKZRn8Y2ESSqw="
             }
           },
           "SetAnswererLambdaFunction": {
@@ -392,7 +392,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/trvy-python-websocket/dev/1593214795399-2020-06-26T23:39:55.399Z/setAnswerer.zip"
+                "S3Key": "serverless/trvy-python-websocket/dev/1593216859768-2020-06-27T00:14:19.768Z/setAnswerer.zip"
               },
               "FunctionName": "trvy-python-websocket-dev-setAnswerer",
               "Handler": "websocket.set_answerer",
@@ -415,14 +415,14 @@
               "SetAnswererLogGroup"
             ]
           },
-          "SetAnswererLambdaVersionnxc1HMiQfB8nfwx94DS6BoNct83nGOd05zBNDs9G9vo": {
+          "SetAnswererLambdaVersionBmMJKQVOzrdkv9wlrlYnYPD3AaHbMCz5NFyBHeZUA": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "SetAnswererLambdaFunction"
               },
-              "CodeSha256": "J0rYwAlyWeoZfwW8EjmR6uIq9PncjyfBhncW4m84tfU="
+              "CodeSha256": "E6lPpgzYi6bd3j4fgZ32jECYldN7EvSKZRn8Y2ESSqw="
             }
           },
           "GetPotentialAnswerersLambdaFunction": {
@@ -432,7 +432,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/trvy-python-websocket/dev/1593214795399-2020-06-26T23:39:55.399Z/getPotentialAnswerers.zip"
+                "S3Key": "serverless/trvy-python-websocket/dev/1593216859768-2020-06-27T00:14:19.768Z/getPotentialAnswerers.zip"
               },
               "FunctionName": "trvy-python-websocket-dev-getPotentialAnswerers",
               "Handler": "websocket.send_next_answerers",
@@ -455,14 +455,14 @@
               "GetPotentialAnswerersLogGroup"
             ]
           },
-          "GetPotentialAnswerersLambdaVersionqqpzd9cK1RkuMpesT3EgLrOxV7RqVLCIlnvNRBWDDc": {
+          "GetPotentialAnswerersLambdaVersionihIEk7joEJiEWWm3GmkgFvoAMUjdkgTOyjHPpRmwbb8": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "GetPotentialAnswerersLambdaFunction"
               },
-              "CodeSha256": "J0rYwAlyWeoZfwW8EjmR6uIq9PncjyfBhncW4m84tfU="
+              "CodeSha256": "E6lPpgzYi6bd3j4fgZ32jECYldN7EvSKZRn8Y2ESSqw="
             }
           },
           "CreateQuestionLambdaFunction": {
@@ -472,7 +472,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/trvy-python-websocket/dev/1593214795399-2020-06-26T23:39:55.399Z/createQuestion.zip"
+                "S3Key": "serverless/trvy-python-websocket/dev/1593216859768-2020-06-27T00:14:19.768Z/createQuestion.zip"
               },
               "FunctionName": "trvy-python-websocket-dev-createQuestion",
               "Handler": "websocket.store_question",
@@ -495,14 +495,14 @@
               "CreateQuestionLogGroup"
             ]
           },
-          "CreateQuestionLambdaVersionW6d7mPBD3slxIxBnmnMBXYn9ZgOSKCsmFmLe10wiV0": {
+          "CreateQuestionLambdaVersionJubn5dgEvFxXJUWBS9HB9eVfJb6EetmreZJGZ0NDM": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "CreateQuestionLambdaFunction"
               },
-              "CodeSha256": "J0rYwAlyWeoZfwW8EjmR6uIq9PncjyfBhncW4m84tfU="
+              "CodeSha256": "E6lPpgzYi6bd3j4fgZ32jECYldN7EvSKZRn8Y2ESSqw="
             }
           },
           "UpdateUserInfoLambdaFunction": {
@@ -512,7 +512,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/trvy-python-websocket/dev/1593214795399-2020-06-26T23:39:55.399Z/updateUserInfo.zip"
+                "S3Key": "serverless/trvy-python-websocket/dev/1593216859768-2020-06-27T00:14:19.768Z/updateUserInfo.zip"
               },
               "FunctionName": "trvy-python-websocket-dev-updateUserInfo",
               "Handler": "websocket.update_user",
@@ -535,14 +535,14 @@
               "UpdateUserInfoLogGroup"
             ]
           },
-          "UpdateUserInfoLambdaVersionpJCFMVUGQzKSqhEgXCj8NmnCgQirdvDgGlIVEDraQM": {
+          "UpdateUserInfoLambdaVersionho5r3n0qPidCtgJRavGUsIv0Bc2xW7Ks1wBjRziZh0": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "UpdateUserInfoLambdaFunction"
               },
-              "CodeSha256": "J0rYwAlyWeoZfwW8EjmR6uIq9PncjyfBhncW4m84tfU="
+              "CodeSha256": "E6lPpgzYi6bd3j4fgZ32jECYldN7EvSKZRn8Y2ESSqw="
             }
           },
           "CreateLambdaFunction": {
@@ -552,7 +552,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/trvy-python-websocket/dev/1593214795399-2020-06-26T23:39:55.399Z/create.zip"
+                "S3Key": "serverless/trvy-python-websocket/dev/1593216859768-2020-06-27T00:14:19.768Z/create.zip"
               },
               "FunctionName": "trvy-python-websocket-dev-create",
               "Handler": "create.main",
@@ -575,14 +575,14 @@
               "CreateLogGroup"
             ]
           },
-          "CreateLambdaVersionjHKRtfN4yFgwtwctT9hm3Lw2nyhXDbGdLKN1V852oAY": {
+          "CreateLambdaVersionQBHdXirlFauyTosy8l8KOChbLHACJv775SdRUCgxXF8": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "CreateLambdaFunction"
               },
-              "CodeSha256": "J0rYwAlyWeoZfwW8EjmR6uIq9PncjyfBhncW4m84tfU="
+              "CodeSha256": "E6lPpgzYi6bd3j4fgZ32jECYldN7EvSKZRn8Y2ESSqw="
             }
           },
           "ListLambdaFunction": {
@@ -592,7 +592,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/trvy-python-websocket/dev/1593214795399-2020-06-26T23:39:55.399Z/list.zip"
+                "S3Key": "serverless/trvy-python-websocket/dev/1593216859768-2020-06-27T00:14:19.768Z/list.zip"
               },
               "FunctionName": "trvy-python-websocket-dev-list",
               "Handler": "list.main",
@@ -615,14 +615,14 @@
               "ListLogGroup"
             ]
           },
-          "ListLambdaVersion0sUIjM32xHEdSHseEheBlezTWWblgjK1AUvnHBgyI": {
+          "ListLambdaVersionNXJ1dljk3nzpb40DpThNqwbyTBhhVTaggJtFBSAI": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "ListLambdaFunction"
               },
-              "CodeSha256": "J0rYwAlyWeoZfwW8EjmR6uIq9PncjyfBhncW4m84tfU="
+              "CodeSha256": "E6lPpgzYi6bd3j4fgZ32jECYldN7EvSKZRn8Y2ESSqw="
             }
           },
           "UpdateLambdaFunction": {
@@ -632,7 +632,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/trvy-python-websocket/dev/1593214795399-2020-06-26T23:39:55.399Z/update.zip"
+                "S3Key": "serverless/trvy-python-websocket/dev/1593216859768-2020-06-27T00:14:19.768Z/update.zip"
               },
               "FunctionName": "trvy-python-websocket-dev-update",
               "Handler": "update.main",
@@ -655,14 +655,14 @@
               "UpdateLogGroup"
             ]
           },
-          "UpdateLambdaVersion478yuIzhT5nzyj1O7gBwnM98O2cB6H81u0cl9IlGc": {
+          "UpdateLambdaVersionbUPHzB9SjvPiYAgTFEuGEIZDEfboIPHHjs08MA0OTY": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "UpdateLambdaFunction"
               },
-              "CodeSha256": "J0rYwAlyWeoZfwW8EjmR6uIq9PncjyfBhncW4m84tfU="
+              "CodeSha256": "E6lPpgzYi6bd3j4fgZ32jECYldN7EvSKZRn8Y2ESSqw="
             }
           },
           "GetLambdaFunction": {
@@ -672,7 +672,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/trvy-python-websocket/dev/1593214795399-2020-06-26T23:39:55.399Z/get.zip"
+                "S3Key": "serverless/trvy-python-websocket/dev/1593216859768-2020-06-27T00:14:19.768Z/get.zip"
               },
               "FunctionName": "trvy-python-websocket-dev-get",
               "Handler": "get.main",
@@ -695,14 +695,14 @@
               "GetLogGroup"
             ]
           },
-          "GetLambdaVersionZxyuXnJDr6C8hMtAKbeMhqfbf8NbwjrUpslHBGmL1A": {
+          "GetLambdaVersionS4h6F11bAAzpNaxBlOfWMAmApzoFmy8AN8JZB7c": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "GetLambdaFunction"
               },
-              "CodeSha256": "J0rYwAlyWeoZfwW8EjmR6uIq9PncjyfBhncW4m84tfU="
+              "CodeSha256": "E6lPpgzYi6bd3j4fgZ32jECYldN7EvSKZRn8Y2ESSqw="
             }
           },
           "DeleteLambdaFunction": {
@@ -712,7 +712,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/trvy-python-websocket/dev/1593214795399-2020-06-26T23:39:55.399Z/delete.zip"
+                "S3Key": "serverless/trvy-python-websocket/dev/1593216859768-2020-06-27T00:14:19.768Z/delete.zip"
               },
               "FunctionName": "trvy-python-websocket-dev-delete",
               "Handler": "delete.main",
@@ -735,14 +735,14 @@
               "DeleteLogGroup"
             ]
           },
-          "DeleteLambdaVersionA6Ij2TWUpaT6P0gUUJaMgMJa4bcOZpqubKvIuPmuM": {
+          "DeleteLambdaVersionF0LOya0xUjNRshnerC6dvEN08NYsYKtRIng2Io7Mc": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "DeleteLambdaFunction"
               },
-              "CodeSha256": "J0rYwAlyWeoZfwW8EjmR6uIq9PncjyfBhncW4m84tfU="
+              "CodeSha256": "E6lPpgzYi6bd3j4fgZ32jECYldN7EvSKZRn8Y2ESSqw="
             }
           },
           "ApiGatewayRestApi": {
@@ -1089,7 +1089,7 @@
               "MethodResponses": []
             }
           },
-          "ApiGatewayDeployment1593214794071": {
+          "ApiGatewayDeployment1593216858475": {
             "Type": "AWS::ApiGateway::Deployment",
             "Properties": {
               "RestApiId": {
@@ -1880,73 +1880,73 @@
           "ConnectionManagerLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "ConnectionManagerLambdaVersiongj8642mlQtv9kxWfSwO5X0pIyxXRmDDDR6AFob54V5o"
+              "Ref": "ConnectionManagerLambdaVersion3OdMRQJu88mP2ch7eQ0q0SoqeVNuVor4NctALHcXFk"
             }
           },
           "DefaultMessageLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "DefaultMessageLambdaVersionmLkrEnfTZuPirRgADFVwdK67IkWIRaUGIQpX9Hb22YI"
+              "Ref": "DefaultMessageLambdaVersion8WjFuhiY48fJbeWXED55boJcGTmnsQg1yrQugKuIvuU"
             }
           },
           "AskQuestionLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "AskQuestionLambdaVersionxRQWlt1MkIqBLCWjLSecG8e95GLjnxjeWyMSHNXDPQ"
+              "Ref": "AskQuestionLambdaVersion2aWWxw6SwpjcByoa23KRm1oApJFD5xZZzKbwYa8wU"
             }
           },
           "SetAnswererLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "SetAnswererLambdaVersionnxc1HMiQfB8nfwx94DS6BoNct83nGOd05zBNDs9G9vo"
+              "Ref": "SetAnswererLambdaVersionBmMJKQVOzrdkv9wlrlYnYPD3AaHbMCz5NFyBHeZUA"
             }
           },
           "GetPotentialAnswerersLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "GetPotentialAnswerersLambdaVersionqqpzd9cK1RkuMpesT3EgLrOxV7RqVLCIlnvNRBWDDc"
+              "Ref": "GetPotentialAnswerersLambdaVersionihIEk7joEJiEWWm3GmkgFvoAMUjdkgTOyjHPpRmwbb8"
             }
           },
           "CreateQuestionLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "CreateQuestionLambdaVersionW6d7mPBD3slxIxBnmnMBXYn9ZgOSKCsmFmLe10wiV0"
+              "Ref": "CreateQuestionLambdaVersionJubn5dgEvFxXJUWBS9HB9eVfJb6EetmreZJGZ0NDM"
             }
           },
           "UpdateUserInfoLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "UpdateUserInfoLambdaVersionpJCFMVUGQzKSqhEgXCj8NmnCgQirdvDgGlIVEDraQM"
+              "Ref": "UpdateUserInfoLambdaVersionho5r3n0qPidCtgJRavGUsIv0Bc2xW7Ks1wBjRziZh0"
             }
           },
           "CreateLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "CreateLambdaVersionjHKRtfN4yFgwtwctT9hm3Lw2nyhXDbGdLKN1V852oAY"
+              "Ref": "CreateLambdaVersionQBHdXirlFauyTosy8l8KOChbLHACJv775SdRUCgxXF8"
             }
           },
           "ListLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "ListLambdaVersion0sUIjM32xHEdSHseEheBlezTWWblgjK1AUvnHBgyI"
+              "Ref": "ListLambdaVersionNXJ1dljk3nzpb40DpThNqwbyTBhhVTaggJtFBSAI"
             }
           },
           "UpdateLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "UpdateLambdaVersion478yuIzhT5nzyj1O7gBwnM98O2cB6H81u0cl9IlGc"
+              "Ref": "UpdateLambdaVersionbUPHzB9SjvPiYAgTFEuGEIZDEfboIPHHjs08MA0OTY"
             }
           },
           "GetLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "GetLambdaVersionZxyuXnJDr6C8hMtAKbeMhqfbf8NbwjrUpslHBGmL1A"
+              "Ref": "GetLambdaVersionS4h6F11bAAzpNaxBlOfWMAmApzoFmy8AN8JZB7c"
             }
           },
           "DeleteLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "DeleteLambdaVersionA6Ij2TWUpaT6P0gUUJaMgMJa4bcOZpqubKvIuPmuM"
+              "Ref": "DeleteLambdaVersionF0LOya0xUjNRshnerC6dvEN08NYsYKtRIng2Io7Mc"
             }
           },
           "ServiceEndpoint": {
@@ -2090,7 +2090,7 @@
         "timeout": 6,
         "runtime": "python3.7",
         "vpc": {},
-        "versionLogicalId": "ConnectionManagerLambdaVersiongj8642mlQtv9kxWfSwO5X0pIyxXRmDDDR6AFob54V5o"
+        "versionLogicalId": "ConnectionManagerLambdaVersion3OdMRQJu88mP2ch7eQ0q0SoqeVNuVor4NctALHcXFk"
       },
       "defaultMessage": {
         "handler": "websocket.default_message",
@@ -2109,7 +2109,7 @@
         "timeout": 6,
         "runtime": "python3.7",
         "vpc": {},
-        "versionLogicalId": "DefaultMessageLambdaVersionmLkrEnfTZuPirRgADFVwdK67IkWIRaUGIQpX9Hb22YI"
+        "versionLogicalId": "DefaultMessageLambdaVersion8WjFuhiY48fJbeWXED55boJcGTmnsQg1yrQugKuIvuU"
       },
       "askQuestion": {
         "handler": "websocket.send_question_to_room",
@@ -2128,7 +2128,7 @@
         "timeout": 6,
         "runtime": "python3.7",
         "vpc": {},
-        "versionLogicalId": "AskQuestionLambdaVersionxRQWlt1MkIqBLCWjLSecG8e95GLjnxjeWyMSHNXDPQ"
+        "versionLogicalId": "AskQuestionLambdaVersion2aWWxw6SwpjcByoa23KRm1oApJFD5xZZzKbwYa8wU"
       },
       "setAnswerer": {
         "handler": "websocket.set_answerer",
@@ -2147,7 +2147,7 @@
         "timeout": 6,
         "runtime": "python3.7",
         "vpc": {},
-        "versionLogicalId": "SetAnswererLambdaVersionnxc1HMiQfB8nfwx94DS6BoNct83nGOd05zBNDs9G9vo"
+        "versionLogicalId": "SetAnswererLambdaVersionBmMJKQVOzrdkv9wlrlYnYPD3AaHbMCz5NFyBHeZUA"
       },
       "getPotentialAnswerers": {
         "handler": "websocket.send_next_answerers",
@@ -2166,7 +2166,7 @@
         "timeout": 6,
         "runtime": "python3.7",
         "vpc": {},
-        "versionLogicalId": "GetPotentialAnswerersLambdaVersionqqpzd9cK1RkuMpesT3EgLrOxV7RqVLCIlnvNRBWDDc"
+        "versionLogicalId": "GetPotentialAnswerersLambdaVersionihIEk7joEJiEWWm3GmkgFvoAMUjdkgTOyjHPpRmwbb8"
       },
       "createQuestion": {
         "handler": "websocket.store_question",
@@ -2185,7 +2185,7 @@
         "timeout": 6,
         "runtime": "python3.7",
         "vpc": {},
-        "versionLogicalId": "CreateQuestionLambdaVersionW6d7mPBD3slxIxBnmnMBXYn9ZgOSKCsmFmLe10wiV0"
+        "versionLogicalId": "CreateQuestionLambdaVersionJubn5dgEvFxXJUWBS9HB9eVfJb6EetmreZJGZ0NDM"
       },
       "updateUserInfo": {
         "handler": "websocket.update_user",
@@ -2204,7 +2204,7 @@
         "timeout": 6,
         "runtime": "python3.7",
         "vpc": {},
-        "versionLogicalId": "UpdateUserInfoLambdaVersionpJCFMVUGQzKSqhEgXCj8NmnCgQirdvDgGlIVEDraQM"
+        "versionLogicalId": "UpdateUserInfoLambdaVersionho5r3n0qPidCtgJRavGUsIv0Bc2xW7Ks1wBjRziZh0"
       },
       "create": {
         "handler": "create.main",
@@ -2249,7 +2249,7 @@
         "timeout": 6,
         "runtime": "python3.7",
         "vpc": {},
-        "versionLogicalId": "CreateLambdaVersionjHKRtfN4yFgwtwctT9hm3Lw2nyhXDbGdLKN1V852oAY"
+        "versionLogicalId": "CreateLambdaVersionQBHdXirlFauyTosy8l8KOChbLHACJv775SdRUCgxXF8"
       },
       "list": {
         "handler": "list.main",
@@ -2294,7 +2294,7 @@
         "timeout": 6,
         "runtime": "python3.7",
         "vpc": {},
-        "versionLogicalId": "ListLambdaVersion0sUIjM32xHEdSHseEheBlezTWWblgjK1AUvnHBgyI"
+        "versionLogicalId": "ListLambdaVersionNXJ1dljk3nzpb40DpThNqwbyTBhhVTaggJtFBSAI"
       },
       "update": {
         "handler": "update.main",
@@ -2339,7 +2339,7 @@
         "timeout": 6,
         "runtime": "python3.7",
         "vpc": {},
-        "versionLogicalId": "UpdateLambdaVersion478yuIzhT5nzyj1O7gBwnM98O2cB6H81u0cl9IlGc"
+        "versionLogicalId": "UpdateLambdaVersionbUPHzB9SjvPiYAgTFEuGEIZDEfboIPHHjs08MA0OTY"
       },
       "get": {
         "handler": "get.main",
@@ -2384,7 +2384,7 @@
         "timeout": 6,
         "runtime": "python3.7",
         "vpc": {},
-        "versionLogicalId": "GetLambdaVersionZxyuXnJDr6C8hMtAKbeMhqfbf8NbwjrUpslHBGmL1A"
+        "versionLogicalId": "GetLambdaVersionS4h6F11bAAzpNaxBlOfWMAmApzoFmy8AN8JZB7c"
       },
       "delete": {
         "handler": "delete.main",
@@ -2429,7 +2429,7 @@
         "timeout": 6,
         "runtime": "python3.7",
         "vpc": {},
-        "versionLogicalId": "DeleteLambdaVersionA6Ij2TWUpaT6P0gUUJaMgMJa4bcOZpqubKvIuPmuM"
+        "versionLogicalId": "DeleteLambdaVersionF0LOya0xUjNRshnerC6dvEN08NYsYKtRIng2Io7Mc"
       }
     },
     "resources": {
@@ -2469,7 +2469,7 @@
   },
   "package": {
     "individually": true,
-    "artifactDirectoryName": "serverless/trvy-python-websocket/dev/1593214795399-2020-06-26T23:39:55.399Z",
+    "artifactDirectoryName": "serverless/trvy-python-websocket/dev/1593216859768-2020-06-27T00:14:19.768Z",
     "artifact": ""
   }
 }

@@ -32,9 +32,9 @@ def _get_user(event):
 
     # Get current user's username and roundID
     user = user_table.get_item(Key={'ConnectionID': event["requestContext"]["connectionId"]},
-                               ProjectionExpression="roundID, username")
+                               ProjectionExpression="RoundID, Username")
 
-    return user["Item"]["roundID"], user["Item"]["username"]
+    return user["Item"]["RoundID"], user["Item"]["Username"]
 
 
 def _send_to_connection(connection_id, data, event):
@@ -88,9 +88,9 @@ def store_question(event, context):
     # TODO fix this to use an external table to keep track of the # of question for each round, instead of uuid
     #   also fix the return type
     question_table = dynamodb.Table("fwsl-questions")
-    question_table.put_item(Item={"roundId": round_id,
-                                  "questionId": str(uuid.uuid1()),
-                                  "question": body["question"]})
+    question_table.put_item(Item={"RoundID": round_id,
+                                  "QuestionID": str(uuid.uuid1()),
+                                  "Question": body["question"]})
     return _get_response(200, "Update successful")
 
 
@@ -98,7 +98,6 @@ def update_user(event, context):
     """
     Sets the user info for that connection
     """
-
     body = _get_body(event)
 
     logger.info("setting user info")
@@ -106,10 +105,11 @@ def update_user(event, context):
     table = dynamodb.Table("fwsl-connections")
     response = table.update_item(
         Key={'ConnectionID': connection_id},
-        UpdateExpression="set roundID=:r, username=:u",
+        UpdateExpression="set RoundID=:r, Username=:u, HasAnswered=:h",
         ExpressionAttributeValues={
-            ':r': body["roundId"],
-            ':u': body["username"]
+            ':r': body["roundID"],
+            ':u': body["username"],
+            ':h': False
         },
         ReturnValues="UPDATED_NEW"
     )
@@ -130,12 +130,12 @@ def set_answerer(event, context):
 
     user_table = dynamodb.Table("fwsl-connections")
     # Get all current connections in room
-    all_users = user_table.scan(ProjectionExpression="ConnectionID, username",
-                                FilterExpression=Key('roundID').eq(round_id))
+    all_users = user_table.scan(ProjectionExpression="ConnectionID, Username",
+                                FilterExpression=Key('RoundID').eq(round_id))
     items = all_users.get("Items", [])
     # get connectionIDs for all users, except next answerer
     users_except_answerer = \
-        [x["ConnectionID"] for x in items if "ConnectionID" in x and x.get("username") != body["answerer"]]
+        [x["ConnectionID"] for x in items if "ConnectionID" in x and x.get("Username") != body["answerer"]]
 
     # Send the "whose next" data to all connections in the room, except next answerer
     message = {"type": "nextAnswerer", "username": username, "answerer": body["answerer"]}
@@ -146,14 +146,14 @@ def set_answerer(event, context):
     # TODO: see if there is a way to use the db to pick 5 random, so that we dont have to read every single question
     # query the db, select 5 random questions to use
     question_table = dynamodb.Table("fwsl-questions")
-    question_items = question_table.scan(ProjectionExpression="questionId",
-                                         FilterExpression=Key('roundId').eq(round_id))
-    questions = [x['question'] for x in question_items.get("Items", []) if 'question' in x]
+    question_items = question_table.scan(ProjectionExpression="QuestionID",
+                                         FilterExpression=Key('RoundID').eq(round_id))
+    questions = [x['Question'] for x in question_items.get("Items", []) if 'Question' in x]
     logger.debug(f"questions: {questions}")
     random_questions = random.sample(questions, 5) if len(questions) > 5 else questions
     logger.debug(f"randomized questions: {random_questions}")
-    answerer_id = [x["ConnectionID"] for x in items if "ConnectionID" in x and x.get("username") == body["answerer"]][0]
-    _send_to_connection(answerer_id, {"type": "pickQuestion", "question_ids": random_questions}, event)
+    answerer_id = [x["ConnectionID"] for x in items if "ConnectionID" in x and x.get("Username") == body["answerer"]][0]
+    _send_to_connection(answerer_id, {"type": "pickQuestion", "questionIDs": random_questions}, event)
 
     return _get_response(200, "Message sent to all connections.")
 
@@ -171,14 +171,14 @@ def send_question_to_room(event, context):
     # Get all current connections in room
     user_table = dynamodb.Table("fwsl-connections")
     all_users = user_table.scan(ProjectionExpression="ConnectionID",
-                                FilterExpression=Key('roundID').eq(round_id))
+                                FilterExpression=Key('RoundID').eq(round_id))
     items = all_users.get("Items", [])
     connections = [x["ConnectionID"] for x in items if "ConnectionID" in x]
 
     question_table = dynamodb.Table("fwsl-questions")
-    question_item = question_table.delete_item(Key={'roundId': round_id, 'questionId': body["questionID"]},
+    question_item = question_table.delete_item(Key={'RoundID': round_id, 'QuestionID': body["questionID"]},
                                                ReturnValues="ALL_OLD")
-    question = question_item["Attributes"]["question"]
+    question = question_item["Attributes"]["Question"]
 
     # Send the question data to all connections in the room
     message = {"type": "question", "username": username, "question": question}
@@ -197,10 +197,10 @@ def send_next_answerers(event, context):
 
     user_table = dynamodb.Table("fwsl-connections")
     # Get all users who haven't answered yet
-    unanswered_users_item = user_table.scan(ProjectionExpression="username",
-                                            FilterExpression=Key('roundID').eq(round_id) & Key('hasAnswered').eq(False))
+    unanswered_users_item = user_table.scan(ProjectionExpression="Username",
+                                            FilterExpression=Key('RoundID').eq(round_id) & Key('HasAnswered').eq(False))
     items = unanswered_users_item.get("Items", [])
-    unanswered_users = [x['username'] for x in items if 'username' in x]
+    unanswered_users = [x['Username'] for x in items if 'Username' in x]
 
     _send_to_connection(event["requestContext"]["connectionId"],
                         {"type": "pickAnswerer", "options": unanswered_users},

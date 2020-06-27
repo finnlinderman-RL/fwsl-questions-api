@@ -23,7 +23,7 @@ serverless invoke local --function list --path mocks/list-event.json
 ```javascript
 // update the user info 
 // IMPORTANT: the user info must be updated before any other requests are made, becasue everything is tied to the round
-{"action": "updateUserInfo", "roundId": "your_round_id", "username": "your_user_name"}
+{"action": "updateUserInfo", "roundID": "your_round_id", "username": "your_user_name"}
 // does not broadcast anything, updates the user info in the db
 
 
@@ -41,7 +41,7 @@ serverless invoke local --function list --path mocks/list-event.json
 // set the next answerer
 {"action": "setAnswerer", "answerer": "Chad"}
 // broadcasts to user defined by "answerer" above
-{"type": "pickQuestion", "question_ids": ["qid1", "qid2", ...]}
+{"type": "pickQuestion", "questionIDs": ["qid1", "qid2", ...]}
 // broadcasts to all users EXCEPT "answerer". 
 // "username" is the user who sent the "setAnswerer" call
 {"type": "nextAnswerer", "username": "otherUser", "answerer": "Chad"}
