@@ -7,6 +7,7 @@ from boto3.dynamodb.types import TypeSerializer
 import libs.lib_db as db
 import libs.lib_handler as handler
 
+
 def main(event, context):
 
     # Load the json string into a dictionary

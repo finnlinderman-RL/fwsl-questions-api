@@ -1,4 +1,4 @@
-service: notes-python
+service: trvy-python-websocket
 
 # Create an optimized package for our functions
 package:
@@ -9,11 +9,18 @@ provider:
   runtime: python3.7
   stage: dev
   region: us-east-2
+  websocketsApiName: fwsl-websocket-api
+  websocketsApiRouteSelectionExpression: $request.body.action # custom routes are selected by the value of the action property in the body
 
   environment:
     tableName:  fwsl-questions
 
   iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - "execute-api:ManageConnections"
+      Resource:
+        - "arn:aws:execute-api:*:*:**/@connections/*"
     - Effect: Allow
       Action:
         - dynamodb:DescribeTable
@@ -23,9 +30,51 @@ provider:
         - dynamodb:PutItem
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
-      Resource: "arn:aws:dynamodb:us-east-2:463038042756:table/lucas-notes-db"
+      Resource: "arn:aws:dynamodb:us-east-2:*:*"
 
 functions:
+  connectionManager:
+    handler: websocket.connection_manager
+    events:
+      - websocket:
+          route: $connect
+      - websocket:
+          route: $disconnect
+  defaultMessage:
+    handler: websocket.default_message
+    events:
+      - websocket:
+          route: $default
+  askQuestion:
+    handler: websocket.send_question_to_room
+    events:
+      - websocket:
+          route: askQuestion
+  setAnswerer:
+    handler: websocket.set_answerer
+    events:
+      - websocket:
+          route: setAnswerer
+  getPotentialAnswerers:
+    handler: websocket.send_next_answerers
+    events:
+      - websocket:
+          route: getPotentialAnswerers
+  createQuestion:
+    handler: websocket.store_question
+    events:
+      - websocket:
+          route: createQuestion
+  updateUserInfo:
+    handler: websocket.update_user
+    events:
+      - websocket:
+          route: updateUserInfo
+  startGame:
+    handler: websocket.start_game
+    events:
+      - websocket:
+          route: startGame
   create:
     handler: create.main
     events:

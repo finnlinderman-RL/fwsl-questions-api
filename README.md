@@ -19,6 +19,49 @@ serverless invoke local --function delete --path mocks/delete-event.json
 serverless invoke local --function list --path mocks/list-event.json
 ```
 
+# Serverless Websocket API
+```javascript
+// update the user info 
+// IMPORTANT: the user info must be updated before any other requests are made, becasue everything is tied to the round
+{"action": "updateUserInfo", "roundID": "your_round_id", "username": "your_user_name"}
+// does not broadcast anything, updates the user info in the db
+
+
+// create a new question
+{"action": "createQuestion", "question": "your question here"}
+// does not broadcast anything, but adds a new question to the db
+
+
+// start the game
+{"action": "startGame"}
+// if the numQuestions == numUsers,
+// picks a user randomly to send a question to, same as "setAnswerer" action
+// else, broadcasts error to user who called "startGame"
+{"type": "startError", "waitingFor": "1"}
+
+
+// get all users who haven't answered a question yet
+{"action": "getPotentialAnswerers"} 
+// broadcasts to all users in round:
+{"type": "pickAnswerer", "options": [user list]}
+
+
+// set the next answerer
+{"action": "setAnswerer", "answerer": "Chad"}
+// broadcasts to user defined by "answerer" above
+{"type": "pickQuestion", "questionIDs": ["qid1", "qid2", ...]}
+// broadcasts to all users EXCEPT "answerer". 
+// "username" is the user who sent the "setAnswerer" call
+{"type": "nextAnswerer", "username": "otherUser", "answerer": "Chad"}
+
+
+// ask a question to the round. Should be called on clicking the question tile
+{"action": "askQuestion", "questionID": "3"}
+// broadcasts to all users in round.
+// "username" is the user who sent the "askQuestion" call
+{"type": "question", "username": "otherUser", "question": "mockCreateContent"}
+```
+
 
 # Deploying
 `AWS_PROFILE=pg serverless deploy`
