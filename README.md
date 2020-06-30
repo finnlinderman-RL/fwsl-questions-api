@@ -31,6 +31,13 @@ serverless invoke local --function list --path mocks/list-event.json
 {"action": "createQuestion", "question": "your question here"}
 // does not broadcast anything, but adds a new question to the db
 
+// start the game
+{"action": "startGame"}
+// if the numQuestions == numUsers,
+// picks a user randomly to send a question to, same as "setAnswerer" action
+// else, broadcasts error to user who called "startGame"
+{"type": "startError", "waitingFor": "1"}
+
 
 // get all users who haven't answered a question yet
 {"action": "getPotentialAnswerers"} 

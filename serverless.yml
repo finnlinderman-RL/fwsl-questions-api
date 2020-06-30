@@ -70,6 +70,11 @@ functions:
     events:
       - websocket:
           route: updateUserInfo
+  startGame:
+    handler: websocket.start_game
+    events:
+      - websocket:
+          route: startGame
   create:
     handler: create.main
     events:

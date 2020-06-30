@@ -66,6 +66,27 @@ def connection_manager(event, context):
 
     elif event["requestContext"]["eventType"] == "DISCONNECT":
         logger.info("Disconnect requested")
+        round_id, _ = _get_user(event)
+
+        # subtract 1 to NumUsers in games table for this round
+        games_table = dynamodb.Table("fwsl-games")
+        cur_game = games_table.update_item(
+            Key={"RoundID": round_id},
+            UpdateExpression="SET NumUsers = NumUsers - :inc",
+            ExpressionAttributeValues={':inc': 1},
+            ReturnValues="ALL_NEW"
+        )
+
+        # remove lobby & trailing questions , if lobby is empty
+        if cur_game["Attributes"]["NumUsers"] == 0:
+            games_table.delete_item(Key={"RoundID": round_id})
+            questions_table = dynamodb.Table("fwsl-questions")
+            orphaned_questions = questions_table.scan(ProjectionExpression="QuestionID",
+                                                      FilterExpression=Key('RoundID').eq(round_id))
+            for question in orphaned_questions.get("Items", []):
+                logger.debug(f"deleting question: {question['QuestionID']}")
+                questions_table.delete_item(Key={"RoundID": round_id,
+                                                 "QuestionID": question["QuestionID"]})
 
         # Remove the connectionID from the database
         table = dynamodb.Table("fwsl-connections")
@@ -85,8 +106,15 @@ def store_question(event, context):
     round_id, username = _get_user(event)
     body = _get_body(event)
 
-    # TODO fix this to use an external table to keep track of the # of question for each round, instead of uuid
-    #   also fix the return type
+    games_table = dynamodb.Table("fwsl-games")
+    games_table.update_item(
+        Key={"RoundID": round_id},
+        UpdateExpression="SET NumQs = if_not_exists(NumQs, :start) + :inc",
+        ExpressionAttributeValues={
+            ':inc': 1,
+            ':start': 0}
+    )
+
     question_table = dynamodb.Table("fwsl-questions")
     question_table.put_item(Item={"RoundID": round_id,
                                   "QuestionID": str(uuid.uuid1()),
@@ -99,6 +127,8 @@ def update_user(event, context):
     Sets the user info for that connection
     """
     body = _get_body(event)
+    round_id = body["roundID"]
+    username = body["username"]
 
     logger.info("setting user info")
     connection_id = event["requestContext"].get("connectionId")
@@ -107,14 +137,69 @@ def update_user(event, context):
         Key={'ConnectionID': connection_id},
         UpdateExpression="set RoundID=:r, Username=:u, HasAnswered=:h",
         ExpressionAttributeValues={
-            ':r': body["roundID"],
-            ':u': body["username"],
+            ':r': round_id,
+            ':u': username,
             ':h': False
         },
         ReturnValues="UPDATED_NEW"
     )
+
+    # add 1 to NumUsers in games table for this round
+    games_table = dynamodb.Table("fwsl-games")
+    games_table.update_item(
+        Key={"RoundID": round_id},
+        UpdateExpression="SET NumUsers = if_not_exists(NumUsers, :start) + :inc, NumQs = if_not_exists(NumQs, :start)",
+        ExpressionAttributeValues={
+            ':inc': 1,
+            ':start': 0}
+    )
+
+    # notify the room that a player has joined
+    # Get all current connections in room
+    all_users = table.scan(ProjectionExpression="ConnectionID, Username",
+                           FilterExpression=Key('RoundID').eq(round_id))
+    items = all_users.get("Items", [])
+    # get connectionIDs and Usernames for all users
+    users_ids = [x["ConnectionID"] for x in items if "ConnectionID" in x]
+    users_unames = [x["Username"] for x in items if "Username" in x]
+
+    # Broadcast lobby info to whole round
+    message = {"type": "newPlayer", "users": users_unames}
+    for connectionID in users_ids:
+        _send_to_connection(connectionID, message, event)
+
     logger.debug(response)
     return _get_response(200, response)
+
+
+def start_game(event, context):
+    """
+    start game if everyone has submitted a question
+    """
+    round_id, username = _get_user(event)
+    connection_id = event["requestContext"].get("connectionId")
+    logger.info(f"Attempting to start game: {round_id}")
+
+    games_table = dynamodb.Table("fwsl-games")
+    game = games_table.get_item(Key={"RoundID": round_id},
+                                ProjectionExpression="NumUsers, NumQs")
+    if game["Item"]["NumUsers"] == game["Item"]["NumQs"]:
+        logger.info("ready to start game")
+        # start the game
+        users_table = dynamodb.Table("fwsl-connections")
+        user_items = users_table.scan(ProjectionExpression="Username",
+                                      FilterExpression=Key('RoundID').eq(round_id))
+        users = [x['Username'] for x in user_items.get("Items", []) if 'Username' in x]
+        logger.debug(f"users: {users}")
+        random_user = random.choice(users)
+        logger.debug(f"randomized user: {random_user}")
+        send_answerer_to_room(round_id, username, random_user, event)
+    else:
+        # waiting for more questions, send error msg
+        question_mismatch = game["Item"]["NumUsers"] - game["Item"]["NumQs"]
+        _send_to_connection(connection_id, {"type": "startError", "waitingFor": f"{question_mismatch}"}, event)
+
+    return _get_response(200, "start request received")
 
 
 def set_answerer(event, context):
@@ -128,6 +213,10 @@ def set_answerer(event, context):
             logger.debug(f"Failed: '{attr}' not in message dict.")
             return _get_response(400, f"'{attr}' not in message dict")
 
+    return send_answerer_to_room(round_id, username, body["answerer"], event)
+
+
+def send_answerer_to_room(round_id, username, answerer, event):
     user_table = dynamodb.Table("fwsl-connections")
     # Get all current connections in room
     all_users = user_table.scan(ProjectionExpression="ConnectionID, Username",
@@ -135,10 +224,10 @@ def set_answerer(event, context):
     items = all_users.get("Items", [])
     # get connectionIDs for all users, except next answerer
     users_except_answerer = \
-        [x["ConnectionID"] for x in items if "ConnectionID" in x and x.get("Username") != body["answerer"]]
+        [x["ConnectionID"] for x in items if "ConnectionID" in x and x.get("Username") != answerer]
 
     # Send the "whose next" data to all connections in the room, except next answerer
-    message = {"type": "nextAnswerer", "username": username, "answerer": body["answerer"]}
+    message = {"type": "nextAnswerer", "username": username, "answerer": answerer}
     logger.debug(f"Sending {message} to {users_except_answerer}")
     for connectionID in users_except_answerer:
         _send_to_connection(connectionID, message, event)
@@ -148,11 +237,11 @@ def set_answerer(event, context):
     question_table = dynamodb.Table("fwsl-questions")
     question_items = question_table.scan(ProjectionExpression="QuestionID",
                                          FilterExpression=Key('RoundID').eq(round_id))
-    questions = [x['Question'] for x in question_items.get("Items", []) if 'Question' in x]
+    questions = [x['QuestionID'] for x in question_items.get("Items", []) if 'QuestionID' in x]
     logger.debug(f"questions: {questions}")
     random_questions = random.sample(questions, 5) if len(questions) > 5 else questions
     logger.debug(f"randomized questions: {random_questions}")
-    answerer_id = [x["ConnectionID"] for x in items if "ConnectionID" in x and x.get("Username") == body["answerer"]][0]
+    answerer_id = [x["ConnectionID"] for x in items if "ConnectionID" in x and x.get("Username") == answerer][0]
     _send_to_connection(answerer_id, {"type": "pickQuestion", "questionIDs": random_questions}, event)
 
     return _get_response(200, "Message sent to all connections.")
@@ -175,10 +264,26 @@ def send_question_to_room(event, context):
     items = all_users.get("Items", [])
     connections = [x["ConnectionID"] for x in items if "ConnectionID" in x]
 
+    # delete question and send to the room
     question_table = dynamodb.Table("fwsl-questions")
     question_item = question_table.delete_item(Key={'RoundID': round_id, 'QuestionID': body["questionID"]},
                                                ReturnValues="ALL_OLD")
     question = question_item["Attributes"]["Question"]
+
+    # decrement NumQuestions in game
+    games_table = dynamodb.Table("fwsl-games")
+    updated_game = games_table.update_item(
+        Key={"RoundID": round_id},
+        UpdateExpression="SET NumQs = NumQs - :inc",
+        ExpressionAttributeValues={':inc': 1},
+        ReturnValues="UPDATED_NEW"
+    )
+
+    if updated_game["Attributes"]["NumQs"] == 0:
+        # TODO notify users to restart
+        logger.debug("out of questions")
+        pass
+
 
     # Send the question data to all connections in the room
     message = {"type": "question", "username": username, "question": question}
