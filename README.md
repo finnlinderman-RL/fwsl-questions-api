@@ -31,6 +31,7 @@ serverless invoke local --function list --path mocks/list-event.json
 {"action": "createQuestion", "question": "your question here"}
 // does not broadcast anything, but adds a new question to the db
 
+
 // start the game
 {"action": "startGame"}
 // if the numQuestions == numUsers,
