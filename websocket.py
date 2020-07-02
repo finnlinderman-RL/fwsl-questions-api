@@ -107,19 +107,53 @@ def store_question(event, context):
     body = _get_body(event)
 
     games_table = dynamodb.Table("fwsl-games")
-    games_table.update_item(
+    updated_game = games_table.update_item(
         Key={"RoundID": round_id},
         UpdateExpression="SET NumQs = if_not_exists(NumQs, :start) + :inc",
         ExpressionAttributeValues={
             ':inc': 1,
-            ':start': 0}
+            ':start': 0},
+        ReturnValues="ALL_NEW"
     )
 
     question_table = dynamodb.Table("fwsl-questions")
     question_table.put_item(Item={"RoundID": round_id,
                                   "QuestionID": str(uuid.uuid1()),
                                   "Question": body["question"]})
+
+    # broadcast that a new question has been added
+    users_table = dynamodb.Table("fwsl-connections")
+    all_users = users_table.scan(ProjectionExpression="ConnectionID",
+                                 FilterExpression=Key('RoundID').eq(round_id))
+    items = all_users.get("Items", [])
+    users_ids = [x["ConnectionID"] for x in items if "ConnectionID" in x]
+    message = {"type": "newQuestion",
+               "question": body["question"],
+               "numQuestions": f'{updated_game["Attributes"]["NumQs"]}',
+               "numPlayers": f'{updated_game["Attributes"]["NumUsers"]}'}
+    for connectionID in users_ids:
+        _send_to_connection(connectionID, message, event)
+
     return _get_response(200, "Update successful")
+
+
+def end_round(event, context):
+    round_id, _ = _get_user(event)
+
+    # broadcast that the round is over
+    users_table = dynamodb.Table("fwsl-connections")
+    all_users = users_table.scan(ProjectionExpression="ConnectionID",
+                                 FilterExpression=Key('RoundID').eq(round_id))
+    items = all_users.get("Items", [])
+    users_ids = [x["ConnectionID"] for x in items if "ConnectionID" in x]
+    for connection_id in users_ids:
+        _send_to_connection(connection_id, {"type": "roundEnd"}, event)
+        # reset the user's "HasAnswered" field to false, so they can play again
+        users_table.update_item(Key={"ConnectionID": connection_id},
+                                UpdateExpression="set HasAnswered = :h",
+                                ExpressionAttributeValues={":h": False})
+
+    return _get_response(200, "Round Ended")
 
 
 def update_user(event, context):
@@ -193,7 +227,7 @@ def start_game(event, context):
         logger.debug(f"users: {users}")
         random_user = random.choice(users)
         logger.debug(f"randomized user: {random_user}")
-        send_answerer_to_room(round_id, username, random_user, event)
+        send_answerer_to_room(round_id, "TRVY", random_user, event)
     else:
         # waiting for more questions, send error msg
         question_mismatch = game["Item"]["NumUsers"] - game["Item"]["NumQs"]
@@ -279,14 +313,21 @@ def send_question_to_room(event, context):
         ReturnValues="UPDATED_NEW"
     )
 
+    # mark user as having answered
+    user_table.update_item(Key={"ConnectionID": event["requestContext"]["connectionId"]},
+                           UpdateExpression="SET HasAnswered = :h",
+                           ExpressionAttributeValues={":h": True})
+
     if updated_game["Attributes"]["NumQs"] == 0:
         # TODO notify users to restart
         logger.debug("out of questions")
         pass
 
-
     # Send the question data to all connections in the room
-    message = {"type": "question", "username": username, "question": question}
+    message = {"type": "question",
+               "username": username,
+               "question": question,
+               "questionsRemaining": f'{updated_game["Attributes"]["NumQs"]}'}
     logger.debug(f"Sending {message} to {connections}")
     for connectionID in connections:
         _send_to_connection(connectionID, message, event)

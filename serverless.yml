@@ -65,6 +65,11 @@ functions:
     events:
       - websocket:
           route: createQuestion
+  endRound:
+    handler: websocket.end_round
+    events:
+      - websocket:
+          route: endRound
   updateUserInfo:
     handler: websocket.update_user
     events:
